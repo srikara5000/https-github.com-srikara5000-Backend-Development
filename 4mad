@@ -1,0 +1,46 @@
+package com.example.wallpaper;
+
+import android.app.WallpaperManager;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
+import android.os.Handler;
+import android.widget.Button;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import java.io.IOException;
+
+public class MainActivity extends AppCompatActivity {
+
+    private static final int[] wallpapers = {R.drawable.one, R.drawable.two, R.drawable.three, R.drawable.four, R.drawable.five};
+    private Button changeWallpaperButton;
+    private WallpaperManager wallpaperManager;
+    private Handler handler = new Handler();
+    private int currentWallpaperIndex = 0;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        changeWallpaperButton = findViewById(R.id.change);
+        wallpaperManager = WallpaperManager.getInstance(this);
+        changeWallpaperButton.setOnClickListener(v -> changeWallpaper());
+        handler.postDelayed(changeWallpaperRunnable, 30000);
+    }
+
+    private final Runnable changeWallpaperRunnable = new Runnable() {
+        @Override
+        public void run() {
+            changeWallpaper();
+            handler.postDelayed(this, 30000);
+        }
+    };
+
+    private void changeWallpaper() {
+        try {
+            wallpaperManager.setBitmap(((BitmapDrawable) ContextCompat.getDrawable(this, wallpapers[currentWallpaperIndex++ % wallpapers.length])).getBitmap());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
