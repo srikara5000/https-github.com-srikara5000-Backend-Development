@@ -1,193 +1,361 @@
 TIC TAC TOE:
 
-def print_board(board): for row in board:
+board = ["-", "-", "-",
+         "-", "-", "-",
+         "-", "-", "-"]
 
-print(" | ".join(row))
 
-print("-" * 5)
-def check_win(board, player):
+def printboard():
+    print(board[0] + "|" + board[1] + "|" + board[2])
+    print(board[3] + "|" + board[4] + "|" + board[5])
+    print(board[6] + "|" + board[7] + "|" + board[8])
 
-for row in board:
-if all(cell == player for cell in row):
 
-return True for col in range(3):
+def printturn(player):
+    print(player + "'s turn")
+    position = input("Enter the position from 1-9: ")
+    while position not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
+        print("Invalid choice")
+        position = input("Enter position from 1-9: ")
 
-if all(board[row][col] == player for row in range(3)): return True
+    position = int(position) - 1
+    while board[position] != "-":
+        position = int(input("Position already taken. Enter a different position: ")) - 1
+    board[position] = player
+    printboard()
 
-if all(board[i][i] == player for i in range(3)): return True
 
-if all(board[i][2 - i] == player for i in range(3)): return True
+def checkgameover():
+    if (board[0] == board[1] == board[2] != "-") or \
+       (board[3] == board[4] == board[5] != "-") or \
+       (board[6] == board[7] == board[8] != "-") or \
+       (board[0] == board[4] == board[8] != "-") or \
+       (board[0] == board[3] == board[6] != "-") or \
+       (board[1] == board[4] == board[7] != "-") or \
+       (board[2] == board[4] == board[6] != "-") or \
+       (board[2] == board[5] == board[8] != "-"):
+        return "win"
+    elif "-" not in board:
+        return "tie"
+    else:
+        return "play"
 
-return False def tic_tac_toe():
+def playgame():
+    printboard()
+    currentplayer = "x"
+    gameover = False
+    while not gameover:
+        printturn(currentplayer)
+        gameresult = checkgameover()
 
-board = [[" " for _ in range(3)] for _ in range(3)] player = "X"
-while True:
+        if gameresult == "win":
+            print(currentplayer + " wins!")
+            gameover = True
+        elif gameresult == "tie":
+            print("It's a tie")
+            gameover = True
+        else:
+            currentplayer = "0" if currentplayer == "x" else "x"
 
-print_board(board)
-row = int(input(f"Player {player}, choose row (0-2): ")) col = int(input(f"Player {player}, choose column (0-2): ")) if board[row][col] == " ":
 
-board[row][col] = player
-if check_win(board, player):
-
-print_board(board) print(f"Player {player} wins!") break
-
-if all(cell != " " for row in board for cell in row): print_board(board)
-print("It's a draw!")
-break
-
-player = "O" if player == "X" else "X" else:
-
-print("That position is already taken!") if __name__ == "__main__":
-
-tic_tac_toe()
+playgame()
 
  
 
 --------------------------------------------------------------------------------------------------------------
 
+
 NIM GAME:
 
 import random
-def get_user_move(heap):
 
-while True: try:
-
-sticks_to_remove =
-int(input(f"Enter sticks to remove (1 to {min(heap, heap // 2)}): "))
-
-if 1 <= sticks_to_remove <= min(heap, heap // 2): return sticks_to_remove
-
-else:
-print(f"Invalid input (1 to {min(heap, heap // 2)}).")
-
-except ValueError:
-print("Invalid input. Enter a valid number.")
-
-def get_computer_move(heap): xor_sum = heap
-for i in range(heap):
-
-xor_sum ^= i
-max_sticks = min(heap, heap // 2)
-
-if xor_sum == 0 else min(heap // 2, heap) return random.randint(1, max_sticks)
-
-def nim_game(): heap = 16 player_turn = 1 while heap > 1:
-
-print(f"Current heap: {'|' * heap}")
-player_name = "Player 1"
-if player_turn == 1 else "Computer"
-sticks_to_remove = get_user_move(heap)
-if player_turn == 1 else get_computer_move(heap)
-heap -= sticks_to_remove
-print(f"{player_name} removes {sticks_to_remove} sticks.") player_turn = 3 - player_turn
-
-winner = "Player 1" if player_turn == 2 else "Computer"
-
-print(f"\n{winner} is the winner!") if _name_ == "_main_":
+def nim_game():
+    heap = random.randint(5, 15)  # Initial heap size
+    print("Initial heap size:", heap)
+    
+    while heap > 0:
+        player_stones = int(input("Enter stones to remove (1-3): "))
+        while player_stones < 1 or player_stones > 3 or player_stones > heap:
+            print("Invalid input. Please enter a number between 1 and 3, and less than or equal to the heap size.")
+            player_stones = int(input("Enter stones to remove (1-3): "))
+        
+        heap -= player_stones
+        
+        if heap == 0:
+            print("Player wins!")
+            break
+        
+        computer_stones = min(3, heap)
+        print("Computer removes", computer_stones, "stones")
+        heap -= computer_stones
+        
+        if heap == 0:
+            print("Computer wins!")
+            break
 
 nim_game()
 
+
 --------------------------------------------------------------------------------------------------------------
+
 
 ASTAR:
 
-def aStarAlgo(start, stop):
-open_set, closed_set, g, parents = {start}, set(), {start: 0}, {start: start} while open_set:
-
-n = min(open_set, key=lambda x: g[x] + heuristic(x)) if n == stop or not Graph_nodes.get(n):
-
-pass else:
-
-for m, weight in get_neighbors(n) or []:
-if m not in open_set and m not in closed_set:
-
-open_set.add(m) parents[m] = n
-g[m] = g[n] + weight
-
-elif g[m] > g[n] + weight:
-g[m], parents[m] = g[n] + weight, n if m in closed_set:
-
-closed_set.remove(m)
-
-open_set.add(m) if not n:
-
-print('Path does not exist!')
-
-return None if n == stop:
-
-path = []
-while parents[n] != n:
-
-path.append(n)
-
-n = parents[n] path.append(start) path.reverse() print('Path found:', path) return path
-
-open_set.remove(n)
-
-closed_set.add(n) print('Path does not exist!') return None
-
+def aStarAlgo(start_node, stop_node):
+         
+        open_set = set(start_node) 
+        closed_set = set()
+        g = {} #store distance from starting node
+        parents = {}# parents contains an adjacency map of all nodes
+ 
+        #ditance of starting node from itself is zero
+        g[start_node] = 0
+        #start_node is root node i.e it has no parent nodes
+        #so start_node is set to its own parent node
+        parents[start_node] = start_node
+         
+         
+        while len(open_set) > 0:
+            n = None
+ 
+            #node with lowest f() is found
+            for v in open_set:
+                if n == None or g[v] + heuristic(v) < g[n] + heuristic(n):
+                    n = v
+             
+                     
+            if n == stop_node or Graph_nodes[n] == None:
+                pass
+            else:
+                for (m, weight) in get_neighbors(n):
+                    #nodes 'm' not in first and last set are added to first
+                    #n is set its parent
+                    if m not in open_set and m not in closed_set:
+                        open_set.add(m)
+                        parents[m] = n
+                        g[m] = g[n] + weight
+                         
+     
+                    #for each node m,compare its distance from start i.e g(m) to the
+                    #from start through n node
+                    else:
+                        if g[m] > g[n] + weight:
+                            #update g(m)
+                            g[m] = g[n] + weight
+                            #change parent of m to n
+                            parents[m] = n
+                             
+                            #if m in closed set,remove and add to open
+                            if m in closed_set:
+                                closed_set.remove(m)
+                                open_set.add(m)
+ 
+            if n == None:
+                print('Path does not exist!')
+                return None
+ 
+            # if the current node is the stop_node
+            # then we begin reconstructin the path from it to the start_node
+            if n == stop_node:
+                path = []
+ 
+                while parents[n] != n:
+                    path.append(n)
+                    n = parents[n]
+ 
+                path.append(start_node)
+ 
+                path.reverse()
+ 
+                print('Path found: {}'.format(path))
+                return path
+ 
+ 
+            # remove n from the open_list, and add it to closed_list
+            # because all of his neighbors were inspected
+            open_set.remove(n)
+            closed_set.add(n)
+ 
+        print('Path does not exist!')
+        return None
+         
+#define fuction to return neighbor and its distance
+#from the passed node
 def get_neighbors(v):
-return Graph_nodes.get(v, [])
-
+    if v in Graph_nodes:
+        return Graph_nodes[v]
+    else:
+        return None
+#for simplicity we ll consider heuristic distances given
+#and this function returns heuristic distance for all nodes
 def heuristic(n):
-H_dist = {'A': 11, 'B': 6, 'C': 99, 'D': 1, 'E': 7, 'G': 0} return H_dist.get(n, 0)
-
-Graph_nodes = {'A': [('B', 2), ('E', 3)], 'B': [('C', 1), ('G', 9)], 'C': None, 'E': [('D', 6)], 'D': [('G', 1)]}
+        H_dist = {
+            'A': 11,
+            'B': 6,
+            'C': 99,
+            'D': 1,
+            'E': 7,
+            'G': 0,
+             
+        }
+ 
+        return H_dist[n]
+ 
+#Describe your graph here  
+Graph_nodes = {
+    'A': [('B', 2), ('E', 3)],
+    'B': [('C', 1),('G', 9)],
+    'C': None,
+    'E': [('D', 6)],
+    'D': [('G', 1)],
+     
+}
 aStarAlgo('A', 'G')
 
---------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
 
-ALPHA BETA PRUNING:
+Alpha-Beta Pruning
+
 
 MAX, MIN = 1000, -1000
-def minimax(depth, nodeIndex, maximizingPlayer, values, alpha, beta):
 
-if depth == 3:
-return values[nodeIndex]
+def minimax(depth, nodeIndex, maximizingPlayer, 
+			values, alpha, beta): 
 
-best = MIN if maximizingPlayer else MAX for i in range(2):
+	if depth == 3: 
+		return values[nodeIndex] 
 
-val = minimax(depth + 1, nodeIndex * 2 + i, not maximizingPlayer, values, alpha, beta)
+	if maximizingPlayer: 
+	
+		best = MIN
 
-best = max(best, val) if maximizingPlayer else min(best, val) alpha = max(alpha, best) if maximizingPlayer else alpha beta = min(beta, best) if not maximizingPlayer else beta
-if beta <= alpha:
+		for i in range(0, 2): 
+			val = minimax(depth + 1, nodeIndex * 2 + i, False, values, alpha, beta) 
+			best = max(best, val) 
+			alpha = max(alpha, best) 
 
-break return best
+			# Alpha Beta Pruning 
+			if beta <= alpha: 
+				break
+		
+		return best 
+	
+	else:
+		best = MAX
 
-if _name_ == "_main_":
-values = [10, 9, 14, 18, 5, 4, 50, 3] print("The optimal value is:", minimax
+		for i in range(0, 2): 
+			val = minimax(depth + 1, nodeIndex * 2 + i, True, values, alpha, beta) 
+			best = min(best, val) 
+			beta = min(beta, best) 
+
+			# Alpha Beta Pruning 
+			if beta <= alpha: 
+				break
+		
+		return best 
+	
+# Driver Code 
+if __name__ == "__main__": 
+
+	values = [10,9,14,18,5,4,50,3] 
+	print("The optimal value is :", minimax(0, 0, True, values, MIN, MAX))
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+4.Write a python program to demonstrate the working of Alpha-Beta Pruning
+
+MAX, MIN = 1000, -1000
+
+def minimax(depth, nodeIndex, maximizingPlayer, 
+			values, alpha, beta): 
+
+	if depth == 3: 
+		return values[nodeIndex] 
+
+	if maximizingPlayer: 
+	
+		best = MIN
+
+		for i in range(0, 2): 
+			val = minimax(depth + 1, nodeIndex * 2 + i, False, values, alpha, beta) 
+			best = max(best, val) 
+			alpha = max(alpha, best) 
+
+			# Alpha Beta Pruning 
+			if beta <= alpha: 
+				break
+		
+		return best 
+	
+	else:
+		best = MAX
+
+		for i in range(0, 2): 
+			val = minimax(depth + 1, nodeIndex * 2 + i, True, values, alpha, beta) 
+			best = min(best, val) 
+			beta = min(beta, best) 
+
+			# Alpha Beta Pruning 
+			if beta <= alpha: 
+				break
+		
+		return best 
+	
+# Driver Code 
+if __name__ == "__main__": 
+
+	values = [10,9,14,18,5,4,50,3] 
+	print("The optimal value is :", minimax(0, 0, True, values, MIN, MAX))
+
+
 
 --------------------------------------------------------------------------------------------------------------
 
+5
 FUZZY SET:
 
-def fuzzy_union(set1, set2): union_set = {}
-for element in set1:
+def fuzzy_union(set1, set2):
+    """
+    Computes the fuzzy union of two fuzzy sets.
+    """
+    result = {}
+    for key in set1.keys():
+        if key in set2:
+            result[key] = max(set1[key], set2[key])
+        else:
+            result[key] = set1[key]
+    for key in set2.keys():
+        if key not in set1:
+            result[key] = set2[key]
+    return result
 
-union_set[element] = max(set1[element], set2.get(element, 0)) for element in set2:
-
-if element not in union_set: union_set[element] = set2[element]
-
-return union_set
 def fuzzy_intersection(set1, set2):
+    """
+    Computes the fuzzy intersection of two fuzzy sets.
+    """
+    result = {}
+    for key in set1.keys():
+        if key in set2:
+            result[key] = min(set1[key], set2[key])
+    return result
 
-intersection_set = {} for element in set1:
+def main():
+    set1 = {'a': 0.4, 'b': 0.7, 'c': 0.5}
+    set2 = {'b': 0.6, 'c': 0.8, 'd': 0.3}
 
-if element in set2:
-intersection_set[element] = min(set1[element], set2[element])
+    print("Fuzzy Set 1:", set1)
+    print("Fuzzy Set 2:", set2)
 
-return intersection_set
-def display_fuzzy_set(fuzzy_set):
+    union_result = fuzzy_union(set1, set2)
+    intersection_result = fuzzy_intersection(set1, set2)
 
-print("{", end="")
-for element, membership in fuzzy_set.items():
+    print("\nFuzzy Union:", union_result)
+    print("Fuzzy Intersection:", intersection_result)
 
-print(f"{element}: {membership}", end=", ") print("}")
-
-set1 = {'a': 0.8, 'b': 0.6, 'c': 0.4, 'd': 0.2, 'e': 0.1} set2 = {'a': 0.7, 'b': 0.5, 'c': 0.3, 'f': 0.9, 'g': 0.4} print("Fuzzy set 1:")
-display_fuzzy_set(set1)
-
-print("\nFuzzy set 2:")
-display_fuzzy_set(set2)
-print("\nUnion of the fuzzy sets:")
-union_set = fuzzy_union(set1, set2) display_fuzzy_set(union_set) print("\nIntersection of the fuzzy sets:") intersection_set = fuzzy_intersection(set1, set2) display_fuzzy_set(intersection_set)
+if __name__ == "__main__":
+    main()
